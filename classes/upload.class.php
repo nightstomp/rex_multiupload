@@ -1,12 +1,22 @@
 <?php
 
+/**
+ * REX Multiupload - provides rex_mediapool_multiupload class
+ *
+ * @link https://github.com/nightstomp/rex_multiupload
+ *
+ * @author info[at]nightstomp.com Hirbod Mirjavadi
+ *
+ * @package redaxo4.3.x
+ * @version 2.0.1
+ */
+ 
 if(!class_exists('rex_mediapool_multiupload')) {
   class rex_mediapool_multiupload {
   
       /**
       * Vars
       */
-  
       public $myself = "rex_multiupload";
       public $sync_cat = null;
       public $clear_uploadlist_automatically = null;
@@ -15,6 +25,7 @@ if(!class_exists('rex_mediapool_multiupload')) {
       public $javascript_debug = null;
       public $showFootnote = null;
       public $return_markup = true;
+      public $onUploadCallback = null;
       public $onSubmitCallback = null;
       public $onProgressCallback = null;
       public $onCompleteCallback = null;
@@ -23,9 +34,8 @@ if(!class_exists('rex_mediapool_multiupload')) {
       public $time = null;
       
       /**
-      * Functions
+      * constructor
       */
-            
       function __construct(){
         global $REX;
         
@@ -40,8 +50,11 @@ if(!class_exists('rex_mediapool_multiupload')) {
       }
       
       
+      /**
+      * setValue() function to edit all parameters
+      */
       public function setValue($sync = true, $clear_auto = true, $clear_after_finish = true, $simultan_uploads_value = 5, 
-        $js_debug = false, $php_debug = false, $footnote = true) {
+        $js_debug = false, $footnote = true) {
         
         global $REX;
         
@@ -53,13 +66,70 @@ if(!class_exists('rex_mediapool_multiupload')) {
         $this->showFootnote = $footnote;
       }
       
+      
+      /**
+      * setter function for displaying catsync select (boolean: true/false)
+      */
+      public function setSyncCat($value = true){
+        $this->sync_cat = $value;
+      }
+      
+      
+      /**
+      * setter function for auto clear list (boolean: true/false)
+      */
+      public function setClearUploadsAutomatically($value = true){
+        $this->clear_uploadlist_automatically = $value;
+      }
+      
+      /**
+      * setter function for auto clear file after complete/failure (boolean: true/false)
+      */
+      public function setClearFileAfterFinish($value = true){
+        $this->clear_file_after_finish = $value;
+      }
+      
+      /**
+      * setter function for simultan uploads (int)
+      */
+      public function setSimultanUploads($value = 5){
+        if(is_numeric($value)){
+          $this->upload_simultaneously = $value;
+        } else {
+          $this->upload_simultaneously = 5;
+        }
+      }
+      
+      /**
+      * setter function for activating js debug (boolean: true/false)
+      */
+      public function setJSDebug($value = false){
+        $this->javascript_debug = $value;
+      }
+      
+      /**
+      * setter function for displaying footnote (boolean: true/false)
+      */
+      public function setFootnote($value = true){
+        $this->showFootnote = $value;
+      }
+      
+      /**
+      * setter function for returning multiupload with markup (boolean: true/false)
+      */
       public function setMarkup($return_markup = true) {
         $this->markup = $return_markup; 
       }
       
       
+      /**
+      * function to register javascript callbacks / $fn needs to be a simple "function" without ()
+      */
       public function setCallback($type, $fn = null){
         switch ($type) {
+          case "upload":
+            $this->onUploadCallback = $fn;
+          break;
           case "submit":
             $this->onSubmitCallback = $fn;
           break;
@@ -75,6 +145,9 @@ if(!class_exists('rex_mediapool_multiupload')) {
         }
       }
       
+      /**
+      * getter function - returns mediaSync select
+      */
       public function getMediaCats(){
         global $REX, $I18N, $PERMALL;
         $rex_file_category = '';
@@ -103,9 +176,8 @@ if(!class_exists('rex_mediapool_multiupload')) {
 
       
       /**
-      * create the uploadform
+      * creates and returns the uploadform
       */
-  
       public function createUploadForm() {
           
         global $REX, $I18N, $PERMALL;
@@ -180,13 +252,6 @@ if(!class_exists('rex_mediapool_multiupload')) {
 
             $script_page_header .= '
             <script>
-              function jsfunction(brt){
-                console.log(brt);
-              }
-              
-              function progressfunc(a,b,c){
-                console.log(a,b,c);                
-              }
               
               function rex_multiupload_createUploader'.$this->time.'(){            
                 var uploader = new qq.FileUploader({
@@ -217,6 +282,24 @@ if(!class_exists('rex_mediapool_multiupload')) {
                   },
                   ';
                   
+                  
+                  $script_page_header .= '
+                  onUpload: function(id,fileName, xhr) {'."\n";
+                    
+                    if($this->onUploadCallback){
+                    $script_page_header .= '
+                    
+                    if(typeof '.$this->onUploadCallback.' == "function") { 
+                      // user callback function
+                      '.$this->onUploadCallback.'(fileName, xhr);
+                    }';
+                    }
+                  $script_page_header .= '
+                  
+                    
+                  },
+                  ';
+                  
                   $script_page_header .= '
                   onProgress: function(id,fileName, loaded, total) {'."\n";
                     
@@ -233,7 +316,7 @@ if(!class_exists('rex_mediapool_multiupload')) {
                     
                   },
                   ';
-                  
+                                    
                   $script_page_header .= '
                   onComplete: function(id,filename,json) {'."\n";
                     if($this->clear_file_after_finish)
