@@ -8,7 +8,7 @@
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
  * @package redaxo4.3.x
- * @version 2.0b
+ * @version 2.0.0
  */
 
 // ADDON IDENTIFIER
