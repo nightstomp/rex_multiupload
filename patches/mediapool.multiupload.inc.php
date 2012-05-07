@@ -1,2 +1,5 @@
 ﻿
-<?php echo rex_mediapool_MultiUploadform(); ?>
+<?php
+  $upload = new rex_mediapool_multiupload;
+  echo $upload->createUploadForm();
+?>

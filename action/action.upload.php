@@ -1,7 +1,7 @@
 <?php
 
 $myself = 'rex_multiupload';
-if($REX['ADDON'][$myself]['debug_modus'])
+if($REX["ADDON"][$myself]["settings"]["SELECT"]["php_debug"])
 {
 	ini_set('error_reporting', E_ALL);
 	ini_set('display_errors', 1);
@@ -123,6 +123,8 @@ class qqFileUploader {
      * Returns array('success'=>true) or array('error'=>'error message')
      */
     function handleUpload($uploadDirectory, $replaceOldFile = FALSE){
+        global $REX;
+        
         if (!is_writable($uploadDirectory)){
             return array('error' => "Fehler: Upload-Verzeichnis hat keine Schreibrechte.");
         }
@@ -144,6 +146,10 @@ class qqFileUploader {
         $pathinfo = pathinfo($this->file->getName());
         $filename = $pathinfo['filename'];
         //$filename = md5(uniqid());
+        
+        if(!isset($pathinfo['extension'])){
+          $pathinfo['extension'] = '';
+        }
         $ext = $pathinfo['extension'];
 
         if($this->allowedExtensions && in_array(strtolower($ext), $this->allowedExtensions)){
@@ -157,7 +163,7 @@ class qqFileUploader {
         
         if ($this->file->save($uploadDirectory . $final_name)){
 			rex_mediapool_syncFile($final_name, rex_get('mediaCat', 'int'), '');
-	        return array('success'=>true);
+	        return array('success'=>true, 'filename' => ''.$final_name.'', 'mediaCatId' => rex_get('mediaCat', 'int'), 'originalname' => ''.$filename.'.'.$ext.'', 'timestamp' => time());
         } else {
             return array('error'=> 'Die Datei konnte nicht gespeichert werden.' .
                 'Der Upload wurde abgebrochen, oder es handelt sich um einen internen Fehler');

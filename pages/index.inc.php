@@ -2,15 +2,29 @@
 
 // GET PARAMS
 ////////////////////////////////////////////////////////////////////////////////
-$myself   = rex_request('page', 'string');
-$faceless = rex_request('faceless', 'string');
-$subpage = rex_request('subpage', 'string');
+$myself     = rex_request('page', 'string');
+$faceless   = rex_request('faceless', 'string');
+$subpage    = rex_request('subpage', 'string');
 
 // Build Subnavigation 
 $subpages = array(
-	array('','Quick Upload'),
-	array('info','Informationen'),
+  array('','Quick Upload'),
+  array('settings', 'Einstellungen'),
+  array('developer', 'Für Entwickler'),
+  array('info','Informationen')
 );
+
+if(is_object($REX['USER']) AND ($REX['USER']->hasPerm('rex_multiupload[settings]') OR $REX['USER']->isAdmin())){
+  //all fine
+} else {
+  unset($subpages[1]);
+}
+
+if(is_object($REX['USER']) AND$REX['USER']->isAdmin()){
+  //all fine
+} else {
+  unset($subpages[2]);
+}
 
 if($faceless != 1)
 {

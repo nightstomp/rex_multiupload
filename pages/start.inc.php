@@ -7,6 +7,10 @@
 		Weitere Einstellungsmöglichkeiten erfährst Du unter "<a href="index.php?page=rex_multiupload&subpage=info">Informationen</a>"
 	</p>
 	
-	<?php echo rex_mediapool_MultiUploadform('backend'); ?>
+	<?php 
+	  $upload = new rex_mediapool_multiupload;
+	  $upload->setValue(); // diese zeile kann auskommentiert werden, dann greift die "Globale Einstellnung", ansonsten Parameter setzen => siehe "Information"
+	  echo $upload->createUploadForm(); 
+	?>
   </div>
 </div>
