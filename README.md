@@ -1,8 +1,7 @@
-installer
+REX Multiupload (rex_multiupload)
 =========
 
-Redaxo &quot;Installer&quot; AddOn
+Redaxo &quot;Multiupload&quot; AddOn
 
-Redaxo 4.X "Installer" AddOn. 
-Install, Update and Download Redaxo AddOns, Plugins, Modules and Templates via REX-API. 
-With update notification, security checks, zip and remote installer!
+How to install:
+Download the package, rename the folder to "rex_multiupload" (without quotes) and upload it into your REDAXO AddOn dir.
