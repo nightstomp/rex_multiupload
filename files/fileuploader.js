@@ -1337,6 +1337,10 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
         params[this._options.inputName] = name;
         params['mediaCat'] = jQuery('#'+this._options.mediaPoolSelector+'').val();
         
+        if(!params['mediaCat']) {
+           params['mediaCat'] = 0;
+        }
+        
         var queryString = qq.obj2url(params, this._options.action);
 
         xhr.open("POST", queryString, true);
