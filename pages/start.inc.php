@@ -9,7 +9,8 @@
 	
 	<?php 
 	  $upload = new rex_mediapool_multiupload;
-	  $upload->setValue(); // diese zeile kann auskommentiert werden, dann greift die "Globale Einstellnung", ansonsten Parameter setzen => siehe "Information"
+	  // an dieser stelle könnten natürlich auch alle setter, getter und funktionen verwendet werden
+	  // siehe "Für Entwickler" in der AddOn Detailseite
 	  echo $upload->createUploadForm(); 
 	?>
   </div>
