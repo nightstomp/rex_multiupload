@@ -32,7 +32,6 @@ if(OOAddon::isAvailable("rex_multiupload"))
    $clear_fin = true, 
    $sim_uploads = 5,
    $js_debug = false, 
-   $php_debug = false, 
    $foot = true
   );
   
@@ -47,7 +46,6 @@ if(OOAddon::isAvailable("rex_multiupload"))
    $clear_fin = Datei nach Upload aus Warteschlange entfernen? boolean(true/false)
    $sim_uploads = Gleichzeitige Uploads (5 wird empfohlen/default) int(1 bis 50)
    $js_debug = JavaScript Debug einschalten? (Firebug) boolean(true/false)
-   $php_debug = PHP Debug einschalten? (WARNUNG!) boolean(true/false)
    $foot = Fußnote mit Erklärung unter Uploadbutton einblenden boolean(true/false)
  
  */
@@ -58,6 +56,46 @@ if(OOAddon::isAvailable("rex_multiupload"))
 ?>';
 
 $code3 = '<?php 
+if(OOAddon::isAvailable("rex_multiupload"))
+{
+ $upload = new rex_mediapool_multiupload;
+
+ // setter function um kategorie sync anzuzeigen (boolean: true/false)
+ $upload->setSyncCat(true);
+ 
+ // setter function für automatische listensäuberung (boolean: true/false)
+ $upload->setClearUploadsAutomatically(true);
+ 
+ // setter function um datei nach upload aus der liste zu entfernen (boolean: true/false)
+ $upload->setClearFileAfterFinish(true);
+ 
+ // setter function um maximalwert für gleichzeitige uploads zu setzen (int)
+ $upload->setSimultanUploads(5);
+ 
+ // setter function um JS-Debugging zu aktivieren (Firebug Output, boolean: true/false)
+ $upload->setJSDebug(false);
+ 
+ // setter function um fußnoten information auszugeben
+ $upload->setFootnote(true);
+ 
+ // setter function um redaxo-addon-markup mit auszugeben (boolean: true/false)
+ // Hinweis: Wird setMarkup() auf false gesetzt, wird setSyncCat & setFootnote 
+ // automatisch auf false gesetzt. Um dennoch den Kategorie-Sync auszugeben,
+ // bitte das Beispiel "Nackte Ausgabe" lesen.
+ $upload->setMarkup(true);
+ 
+ 
+ // Ausgabe des Uploaders   
+ echo $upload->createUploadForm();
+
+
+ 
+} else {
+ echo rex_warning(\'"rex_multiupload" Addon benötigt!\');
+}
+?>';
+
+$code4 = '<?php 
 if(OOAddon::isAvailable("rex_multiupload"))
 {
  $upload = new rex_mediapool_multiupload;
@@ -93,10 +131,11 @@ if(OOAddon::isAvailable("rex_multiupload"))
 }
 ?>';
 
-$code4 = '<?php 
+$code5 = '<?php 
 if(OOAddon::isAvailable("rex_multiupload"))
 {
  $upload = new rex_mediapool_multiupload;
+ $upload->setCallback("upload", "uploadCallback");
  $upload->setCallback("submit", "submitCallback");
  $upload->setCallback("progress", "progressCallback");
  $upload->setCallback("complete", "completeCallback");
@@ -107,7 +146,7 @@ if(OOAddon::isAvailable("rex_multiupload"))
  /**
  ** Registriert die JavaScript-Callbacks
  ** Selbstverständlich können auch in Verbindung mit den Callbacks weiterhin 
- ** alle Methoden wie setValue(), getMediaCats() oder setMarkup() verwendet werden
+ ** alle Methoden wie setValue(), getMediaCats(), setXYZ..() oder setMarkup() verwendet werden
  */
  
 } else {
@@ -118,8 +157,9 @@ if(OOAddon::isAvailable("rex_multiupload"))
   
   <p class="rex-tx1">Mit der Aufrufmethode unten beschrieben bezieht der Multiupload die Parameter aus dem Bereich "Einstellungen". Möchtest Du eigene Einstellungen verwenden, musst du die setValue() Methode aufrufen. (nächstes Beispiel)
   </p>
+  
+  
   <?php rex_highlight_string($code1); ?>
-
   <h3>Erweiterte Konfiguration</h3>
   <p class="rex-tx1">Möchte man den Multiupload Addon-/Modulabhängig steuern, muss man sich der setValue() Methode bedienen.
     Mit setValue() kann das AddOn praktisch beliebig eingestellt werden. Alle erwarteten Werte sind boolean, d.h. true oder false.
@@ -127,16 +167,26 @@ if(OOAddon::isAvailable("rex_multiupload"))
   </p>
   <?php rex_highlight_string($code2); ?>
   
-  <h3>Nackte Ausgabe</h3>
   
+  <h3>Setter Methoden</h3>
+  <p class="rex-tx1">
+    Da es teilweise schwer ist, sich die Reihenfolge für "setValue()" zu merken, gibt es für jede Einstellung einen eigenen Setter.
+    Alle Setter können nach Lust und Laune miteinander kombiniert werden. Die Nutzung einer Settermethode überschreibt immer
+    die setValue() Einstellung für die aktuelle Config. Zur Übersichtlichkeit wird empfohlen, die Methoden nicht zu vermischen. Wird eine Settermethode 
+    für eine bestimmte Config nicht genutzt, greift automatisch die Config aus "Einstellungen" für die Funktion.
+  </p>
+  <?php rex_highlight_string($code3); ?>
+  
+  
+  <h3>Nackte Ausgabe</h3>
   <p class="rex-tx1">Perfekt für AddOns oder Module, ohne Addon-Markup. Hier bedient man sich der setMarkup() Methode und stellt den Wert auf "false"
     Die Deaktivierung des Markups schaltet den Kategoriesync und die Fußnote ab. Um ein Markupfreien Kategoriesync zu erhalten, holt man sich die
     Rückgabe mit der Methode getMediaCats(). Die Position der Ausführung spielt dabei keine Rolle. Erklärung findet sich unten
   </p>
-  <?php rex_highlight_string($code3); ?>
+  <?php rex_highlight_string($code4); ?>
+  
   
   <h2 class="rex-hl2">Für Profis</h2><br />
-  
   <h3>Wer macht das xForm-AddOn? ;)</h3>
   
   <p class="rex-tx1">
@@ -144,21 +194,43 @@ if(OOAddon::isAvailable("rex_multiupload"))
     jedoch richtig spannend wird das ganze, wenn man selbst bestimmen will, was möglich ist. Die beste Manipulation / Weiterverarbeitung läuft mit JavaScript. 
     Dafür steht die Methode "setCallback()" zur Verfügung. Es gibt vier Callback-Typen. <br />
     <ul>
-      <li>"submit" (bei Auswahl einer Datei)</li>
+      <li>"upload" (bei Upload einer Datei)</li>
+      <li>"submit" (direkt nach Auswahl einer Datei)</li>
       <li>"progress" (bei der Verarbeitung der Datei)</li>
       <li>"complete" (Datei wurde erfolgreich hochgeladen)</li>
       <li>"cancel" (Dateiupload wurde abgebrochen / ist fehlgeschlagen).</li>
     </ul>
     Die ganzen Callbacks feuern für jede Datei in der Warteschlange einzeln, d.h. man hat absolute Kontrolle darüber, was man hat/macht.<br />
     Mit den Callbacks ist man in der Lage, richtige Module / AddOns zu schreiben, in dem man mit den Rückgabewerten die Weiterverarbeitung macht (z.B. Dateiname in ein Inputfeld setzen, oder mit AJAX in die Datenbank jagen u.v.m.)<br /><br />
-    Es können theoretisch alle vier Callbacks pro Objekt-Instanz geaddet werden. Keine Doppelungen, es darf pro $objekt z.B. nur ein mal setCallback('complete, 'function') gesetzt werden. Wird ein weiteres mal gesetzt, wird der erste Wert überschrieben. Die Registrierung des Callbacks muss vor der createUploadForm() Methode erfolgen. Damit die Länge dieser Erklärung nicht Überhand nimmt, eine kurze Erklärung:<br /><br />
-    Jeder Callback hat eine bestimmte Rückgabe. Damit die Rückgaben registriert werden, muss deine JavaScript Funktion einige Parameter erwarten.<br />
+    Es können theoretisch alle Callbacks pro Objekt-Instanz gleichzeitig geaddet werden. Keine Doppelungen, es darf pro $objekt z.B. nur ein mal setCallback('complete, 'function') gesetzt werden. Wird ein weiteres mal gesetzt, wird der erste Wert überschrieben. Die Registrierung des Callbacks muss vor der createUploadForm() Methode erfolgen. Damit die Länge dieses Manuals nicht Überhand nimmt, eine kurze Erklärung:<br /><br />
+    Jeder Callback hat eine bestimmte Rückgabe. Damit die Rückgaben registriert werden, muss deine JavaScript Funktion einige Parameter erwarten.
     Folgende Rückgaben gibt es: (JavaScript) <br />
     <ul>
-      <li>"function submitCallback(filename){ ... }" - Deine Funktion erhält sofort nach Auswahl den Dateinamen</li>
-      <li>"function progressCallback(fileName, loaded, total){ ... }" Dauercallback, bis Prozess beendet ist. Schickt non-stop Dateiname, 
-        aktuell hochgeladen, Gesamtgröße. Damit kann man alle möglichen Berechnungen machen. Kann extrem Rechenintensiv werden!</li>
-      <li>"function cancelCallback(filename){ ... }" - Dateiname des fehlgeschlagenen / abgebrochenen Uploads.</li>
+      <li>"function uploadCallback(filename, xhr){ ... }"
+        <ul>
+          <li>Feuert direkt beim Upload - Return "fileName" und "xhr"</li>
+        </ul>
+      </li>
+      
+      <li>"function submitCallback(filename){ ... }"
+        <ul>
+          <li>Deine Funktion erhält sofort nach Auswahl den Dateinamen</li>
+        </ul>
+      </li>
+      
+      <li>"function progressCallback(fileName, loaded, total){ ... }"
+        <ul>
+          <li>Dauercallback, bis Prozess beendet ist. Schickt non-stop filename, current uploaded, totalsize zurück. Damit kann man alle möglichen Berechnungen machen.
+            Kann extrem Rechenintensiv werden!</li>
+        </ul>
+      </li>
+      
+      
+      <li>"function cancelCallback(filename){ ... }"
+        <ul>
+          <li>Dateiname des fehlgeschlagenen / abgebrochenen Uploads</li>
+        </ul>
+      </li>
         
       <li>"function completeCallback(json){ ... }" - Der wichtigste Callback.<br />
         Schickt ein JSON-Objekt mit jeder Menge Informationen zurück. Mittels "json.objectname" kannst du die Rückgaben abrufen:<br />
@@ -175,7 +247,9 @@ if(OOAddon::isAvailable("rex_multiupload"))
     in der Moduleingabe vorbereitet werden. Wichtig: Beim Methodenaufruf im PHP darf der Funktionsname der Callbacks KEINE KLAMMERN() oder sonstige Parameter enthalten.
     Es darf nur der reine Funktionsname übergeben werden. Lediglich eure JavaScripts müssen für die Parameter-Rückgabe vorbereitet werden
   </p>
-  <?php rex_highlight_string($code4); ?>
+  
+  <?php rex_highlight_string($code5); ?>
+  
   <p>Bei Fragen wendet euch bitte im Forum oder direkt bei <a href="http://www.github.com/nightstomp/redaxo_multiupload">GitHub</a></p>
   <p>&copy; 2011-2012 Hirbod Mirjavadi (info@nightstomp.com)</p>
   
