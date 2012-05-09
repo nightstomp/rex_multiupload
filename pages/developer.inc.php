@@ -192,7 +192,7 @@ if(OOAddon::isAvailable("rex_multiupload"))
   <p class="rex-tx1">
     Richtig interessant wird es jetzt. Die JavaScript-Callbacks. Mit den oben genannten Methoden habe ich schon viele Einstellungsmöglichkeiten implementiert,
     jedoch richtig spannend wird das ganze, wenn man selbst bestimmen will, was möglich ist. Die beste Manipulation / Weiterverarbeitung läuft mit JavaScript. 
-    Dafür steht die Methode "setCallback()" zur Verfügung. Es gibt vier Callback-Typen. <br />
+    Dafür steht die Methode "setCallback()" zur Verfügung. Es gibt fünf Callback-Typen. <br />
     <ul>
       <li>"upload" (bei Upload einer Datei)</li>
       <li>"submit" (direkt nach Auswahl einer Datei)</li>
