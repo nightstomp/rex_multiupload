@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * REX Multiupload - upload class
+ *
+ * @link https://github.com/nightstomp/rex_multiupload
+ *
+ * @author info[at]nightstomp.com Hirbod Mirjavadi
+ *
+ * @package redaxo4.3.x
+ * @version 2.0.2
+ */
+ 
 $myself = 'rex_multiupload';
 if($REX["ADDON"][$myself]["settings"]["SELECT"]["php_debug"])
 {

@@ -369,6 +369,7 @@ qq.FileUploaderBasic.prototype = {
             debug: this._options.debug,
             action: this._options.action,         
             maxConnections: this._options.maxConnections,   
+            mediaPoolSelector: this._options.mediaPoolSelector,
             inputName: this._options.inputName,
             extraDropzones: this._options.extraDropzones,
             onProgress: function(id, fileName, loaded, total){                
@@ -1336,7 +1337,7 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
         params = params || {};
         params[this._options.inputName] = name;
         params['mediaCat'] = jQuery('#'+this._options.mediaPoolSelector+'').val();
-        
+
         if(!params['mediaCat']) {
            params['mediaCat'] = 0;
         }
