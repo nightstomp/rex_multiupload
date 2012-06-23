@@ -8,7 +8,7 @@
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
  * @package redaxo4.3.x
- * @version 2.0.2
+ * @version 2.0.3
  */
 
 // ADDON IDENTIFIER
@@ -23,7 +23,7 @@ $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 2,
 'MINORVERSION' => 0,
-'SUBVERSION'   => 2
+'SUBVERSION'   => 3
 );
 
 // ADDON REX COMMONS

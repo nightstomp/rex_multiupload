@@ -1,4 +1,4 @@
-﻿<div class="rex-addon-output">
+<div class="rex-addon-output">
   <h2 class="rex-hl2" style="font-size: 1em;">REX Multiupload</h2>
 
   <div class="rex-addon-content">
