@@ -1,13 +1,14 @@
 <?php
+
 /**
- * REX Multiupload - upload class
+ * REX Multiupload - Multi Upload Utlility
  *
  * @link https://github.com/nightstomp/rex_multiupload
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x
- * @version 2.0.2
+ * @package redaxo4.3.x, redaxo4.4
+ * @version 2.1.0
  */
  
 $myself = 'rex_multiupload';
@@ -17,13 +18,6 @@ if($REX["ADDON"][$myself]["settings"]["SELECT"]["php_debug"])
 	ini_set('display_errors', 1);
 }
 
-// start the session
-
-// security proof // die() if not logged in
-if(is_object($REX['USER']) AND ($REX['USER']->hasPerm('rex_multiupload[]') OR $REX['USER']->isAdmin())){
-} else {
-	die('ACCESS DENIED');
-}
 /**
  * Handle file uploads via XMLHttpRequest
  */
@@ -182,17 +176,22 @@ class qqFileUploader {
     }    
 }
 
+// security proof // die() if not logged in
+if(is_object($REX['USER']) AND ($REX['USER']->hasPerm('rex_multiupload[]') OR $REX['USER']->isAdmin())){
+  // redaxo array without dots, strip them out
+  $blockedExt = str_replace('.', '', $REX['MEDIAPOOL']['BLOCKED_EXTENSIONS']);
+  $allowedExtensions = $blockedExt;
 
-// redaxo array without dots, strip them out
-$blockedExt = str_replace('.', '', $REX['MEDIAPOOL']['BLOCKED_EXTENSIONS']);
-$allowedExtensions = $blockedExt;
+  // max file size in bytes
+  //$sizeLimit = 10 * 1024 * 1024;
+  $sizeLimit = '10737418240';
+  $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+  $result = $uploader->handleUpload($REX['HTDOCS_PATH'].'/files/');
 
-// max file size in bytes
-//$sizeLimit = 10 * 1024 * 1024;
-$sizeLimit = '10737418240';
-$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-$result = $uploader->handleUpload($REX['HTDOCS_PATH'].'/files/');
+  // to pass data through iframe you will need to encode all html tags
+  echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+} else {
+	die('ACCESS DENIED');
+}
 
-// to pass data through iframe you will need to encode all html tags
-echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
 

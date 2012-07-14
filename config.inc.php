@@ -7,8 +7,8 @@
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x
- * @version 2.0.2
+ * @package redaxo4.3.x, redaxo4.4
+ * @version 2.1.0
  */
 
 // ADDON IDENTIFIER
@@ -22,8 +22,8 @@ $myroot = $REX['INCLUDE_PATH'].'/addons/'.$myself.'/';
 $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 2,
-'MINORVERSION' => 0,
-'SUBVERSION'   => 2
+'MINORVERSION' => 1,
+'SUBVERSION'   => 0
 );
 
 // ADDON REX COMMONS
@@ -86,6 +86,10 @@ if ($REX['REDAXO'])
      {
        require_once $include;
      }
+  }
+  
+  if (!function_exists('mime_content_type') && !function_exists('finfo_open')) {
+    require_once $myroot.'functions/compatfunction.mime_content_type.inc.php';
   }
 }
 
