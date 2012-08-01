@@ -1,43 +1,249 @@
-//
-// Helper functions
-//
+/**
+ * REX Multiupload - Multi Upload Utlility
+ *
+ * @link https://github.com/nightstomp/rex_multiupload
+ *
+ * @author info[at]nightstomp.com Hirbod Mirjavadi
+ *
+ * @package redaxo4.3.x, redaxo4.4
+ * @version 3.0.0 BETA 3
+ */
+
+/**
+* Helper functions
+*/
 jQuery(document).ready(function(){
-	if (lastMediaPoolOpener){
-		jQuery('#rex-navi-page a').each(function(){
-			if(jQuery(this).html() == "Multiupload"){
-				jQuery(this).attr('href', jQuery(this).attr('href') + '&opener_input_field='+lastMediaPoolOpener);
-			}
-		})
-	}	
+  if (lastMediaPoolOpener){
+    jQuery('#rex-navi-page a').each(function(){
+      if(jQuery(this).html() == "Multiupload"){
+        jQuery(this).attr('href', jQuery(this).attr('href') + '&opener_input_field='+lastMediaPoolOpener);
+      }
+    })
+  } 
 });
 
+/**
+* clears the upload-list
+*/
 function clearUploadList() {
-	jQuery('.qq-upload-fail').each(function(){
-		jQuery(this).fadeOut();
-		
-		window.setTimeout(function(){
-		   jQuery(this).remove();
-		},500);
-	});
-	
-	jQuery('.qq-upload-success').each(function(){
-		jQuery(this).fadeOut();
-		
-		window.setTimeout(function(){
-		   jQuery(this).remove();
-		},500);
-	});
+  jQuery('.qq-upload-fail').each(function(){
+    jQuery(this).fadeOut();
+    
+    window.setTimeout(function(){
+       jQuery(this).remove();
+    },500);
+  });
+  
+  jQuery('.qq-upload-success').each(function(){
+    jQuery(this).fadeOut();
+    
+    window.setTimeout(function(){
+       jQuery(this).remove();
+    },500);
+  });
 }
 
+/**
+* clears uploadlist on success
+*/
 function clearUploadListSuccess() {
-	jQuery('.qq-upload-success').each(function(){
-		jQuery(this).fadeOut();
-		
-		window.setTimeout(function(){
-		   jQuery(this).remove();
-		},500);
-	});
+  jQuery('.qq-upload-success').each(function(){
+    jQuery(this).fadeOut();
+    
+    window.setTimeout(function(){
+       jQuery(this).remove();
+    },500);
+  });
 }
+
+
+/**
+* rex_multiupload edit-callback
+*/
+function multiuploadEditFile(json) {
+  var prependLi = '';
+  prependLi += '<li class="editObject" data-filename="'+json.filename+'" data-fileid="'+json.fileId+'" data-mediacat="'+json.mediaCatId+'">';
+  prependLi += '  <span class="qq-upload-spinner" style="display: none"></span>';
+  prependLi += '  <span class="editFileName">'+json.filename+'</span>';
+  prependLi += '  <span class="qq-upload-success-text"></span>';
+  prependLi += '  <span class="clear_link">X</span>';
+  prependLi += '  <div class="editReturn"></div>';
+  prependLi += '</li>';
+  jQuery('.edit_panel').show('slow');
+  jQuery('.edit_uploads').prepend(prependLi);
+  
+}
+
+
+jQuery(document).ready(function()
+{
+  /**
+   * add click event to li from edit_list. received data from mediapool will be
+   * parsed and displayed under uploader in redaxo
+   */
+  jQuery('.edit_uploads li').live('click', function(event)
+  {
+    if(event.target.className != 'editObject' && event.target.className != 'editFileName'){
+      return false;
+    }
+    
+    var parentEl = jQuery(this);
+    var el = parentEl.children('div');
+    var url = 'index.php?page=mediapool&subpage=detail&file_id='+jQuery(this).attr('data-fileid');
+
+    if(!jQuery(this).hasClass('open')) 
+    {
+      parentEl.children('.qq-upload-spinner').show();
+
+      jQuery.ajax(
+      {
+        url: url,
+        success: function(data) 
+        {
+          parentEl.children('.qq-upload-spinner').hide();
+          jQuery('.edit_uploads li').each(function()
+          {
+            jQuery(this).removeClass('open');
+            jQuery('.edit_uploads .qq-upload-success-text').empty();
+            jQuery(this).children('div').hide().empty();
+          });
+
+          $response = jQuery(data);
+          el.hide().html($response.find('form').eq(1)).fadeIn('slow');
+          el.closest('.rex-form-wrapper').append('')
+          
+          jQuery('.edit_uploads .rex-form-row').each(function(index)
+          {
+            if(jQuery(this).has('.rex-form-read, .rex-form-file').length < 1) 
+            {
+              jQuery(this).addClass('multiupload_edit');
+            }
+            else
+            {
+              jQuery(this).remove();
+            }
+          });
+
+          jQuery('.edit_uploads .rex-form-submit-2')
+          .attr('onclick', '')
+          .clone()
+          .appendTo('.rex-form-submit')
+          .addClass('rex-form-submit-3')
+          .val('Bearbeitung beenden')
+          .attr('onclick', '')
+          .click(function()
+          {
+            el.hide('slow', function(){
+              jQuery(this).empty();
+              parentEl.removeClass('open');
+            });
+            return false;
+          });
+
+          parentEl.addClass('open');
+
+        }
+      });
+    }
+  });
+
+  /**
+  * add submit event and all functions to returned edit form from mediapool
+  */
+  jQuery('.edit_uploads .rex-form-submit input').live('click', function() 
+  {
+    var submitEl = jQuery(this);
+    var thisForm = jQuery(this).closest('form');
+    var serial =  jQuery(this).closest('form').serializeArray();
+    serial.push({ name: this.name, value: this.value });
+    serial.push({ name: 'file_new', value: 'null'});
+
+    var fileWasDeleted = false;
+    if(this.name == 'btn_delete')
+    {
+      fileWasDeleted = true;
+    }
+
+    submitEl.val('Bitte warten...');
+
+    jQuery.ajax(
+    {
+      type: "POST",
+      url: thisForm.attr('action'),
+      data: serial,
+      success: function(data)
+      {
+        var $response = jQuery(data);
+        if($response.find('.rex-info').length>0) 
+        {
+          submitEl.val($response.find('.rex-info p').text());
+          if(fileWasDeleted)
+          {
+            jQuery('.rex-form-submit-3').remove();
+            jQuery(thisForm)
+            .closest('.editObject')
+            .delay(1000)
+            .hide(
+              'fast', function()
+              {
+                jQuery(this).remove();
+                if(jQuery('.edit_uploads li').length < 1){
+                  jQuery('.edit_panel').hide('slow');
+                }
+              }
+            );
+          }
+        }
+        else 
+        {
+          if($response.find('.rex-warning-block').length > 0) {
+            alert($response.find('.rex-warning-block').text());
+            submitEl.val('Löschen nicht möglich!');
+          } else {
+            submitEl.val($response.find('.rex-warning p').text());
+          }
+        }
+
+        window.setTimeout(function()
+        {
+          if(!fileWasDeleted) 
+          {
+            submitEl.val('Aktualisieren');
+          }
+          else
+          {
+            submitEl.val('Löschen');
+          }
+        }, 3000);
+      }
+    });
+    return false;
+  });
+
+  /**
+   * add remove event for "edit" element. removes LI from list
+   */
+  jQuery('.edit_uploads .clear_link').live('click', function(event)
+  {
+    jQuery(this).parents('li').hide('slow', function()
+    {
+      jQuery(this).remove();
+      if(jQuery('.edit_uploads li').length < 1)
+      {
+        jQuery('.edit_panel').hide('slow');
+      }
+    });
+  });
+
+});
+
+
+
+
+
+/* UPLOAD JS CLASS */
+
+
 
 var qq = qq || {};
 
@@ -433,18 +639,18 @@ qq.FileUploaderBasic.prototype = {
     },  
     _uploadFileList: function(files){
         if (files.length > 0) {
-			for (var i=0; i<files.length; i++){
-			    if ( !this._validateFile(files[i])){
-			        return;
-			    }
-			}
+      for (var i=0; i<files.length; i++){
+          if ( !this._validateFile(files[i])){
+              return;
+          }
+      }
 
-			for (var i=0; i<files.length; i++){
-			    this._uploadFile(files[i]);
-			}
+      for (var i=0; i<files.length; i++){
+          this._uploadFile(files[i]);
+      }
         }
         else {
-			this._error('noFilesError', "");
+      this._error('noFilesError', "");
         }
     },
     _uploadFile: function(fileContainer){      
@@ -582,7 +788,7 @@ qq.FileUploader = function(o){
             fail: 'qq-upload-fail'
         },
 
-		//if null, use default images specified in fileuploader.css
+    //if null, use default images specified in fileuploader.css
         icons : {
             finished: null,
             failed: null
@@ -729,7 +935,7 @@ qq.extend(qq.FileUploader.prototype, {
             qq.addClass(item, this._classes.success);
             this._find(item, 'finished').style.display = "inline-block";
             if (this._icons.finished) {
-	            this._find(item, 'finished').style.background = "url('" + this._icons.finished + "')";
+              this._find(item, 'finished').style.background = "url('" + this._icons.finished + "')";
             }
         } else {
             qq.addClass(item, this._classes.fail);

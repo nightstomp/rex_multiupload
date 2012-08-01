@@ -177,6 +177,111 @@ li.qq-upload-success:hover {
    color: #fff !important;
 }
 
+
+.edit_panel {
+   display: none;
+}
+
+.edit_uploads li:hover {
+   background: #bbb;
+   color: #fff;
+}
+
+.edit_uploads li.open,
+.edit_uploads li.open:hover {
+   background: #666 !important;
+   color: #fff !important;
+}
+
+.edit_uploads li {
+   cursor: pointer;
+   border-bottom: 1px solid #bbb;
+}
+
+.edit_uploads li .rex-form-wrapper {
+   background: #666 !important;
+}
+
+.edit_uploads li.open {
+   cursor: default;
+   border-top: 1px solid #000;
+   border-bottom: 1px solid #000;
+}
+
+.edit_uploads p {
+   margin: 0 !important;
+}
+
+.edit_uploads div.multiupload_edit {
+   border: #fff !important;
+   padding: 3px !important;
+}
+
+.edit_uploads textarea {
+   height: 45px;
+}
+
+
+.edit_uploads .rex-form-text input,
+.edit_uploads textarea
+ {
+}
+
+li.open .editFileName {
+   background: #999999;
+   border-bottom: 1px solid silver;
+   color: #C2FF86;
+   display: block;
+   font-weight: bold;
+   margin: -5px -5px 10px;
+   padding: 5px 10px;
+}
+
+li.open #rex_file_new_category {
+   width: 463px;
+}
+
+li.open .multiupload_edit label {
+   float: none !important;
+}
+
+li.open p.rex-form-submit {
+   border-top: 1px solid silver !important;
+   padding-top: 10px !important;
+   margin-top: 5px !important;
+   width: 99% !important;
+}
+
+
+li.open .rex-form-submit {
+   margin-left: 0px !important;
+   margin-right: 10px !important;
+}
+
+.editObject .clear_link {
+   cursor: pointer;
+   float: right;
+   padding-left: 10px;
+   position: absolute;
+   right: 10px;
+   top: 5px;
+}
+
+.editObject .clear_link:hover {
+   color: red;
+}
+
+.editObject .clear_link  a {
+   font-weight: bold;
+   text-decoration: none !important;
+}
+
+.editObject .qq-upload-success .clear_link a {
+   color: #fff;
+   font-weight: bold;
+   text-decoration: none !important;
+}
+
 li.qq-upload-fail,
 li.qq-upload-fail:hover,
 li.qq-upload-fail a {
@@ -194,8 +299,13 @@ li.qq-upload-fail a {
 }
 
 .clear_link {
+   cursor: pointer;
    float: right;
    padding-left: 10px;
+}
+
+.clear_link:hover {
+   color: red;
 }
 
 .clear_link  a {

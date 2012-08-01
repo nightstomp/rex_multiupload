@@ -11,6 +11,7 @@
     $upload = new rex_mediapool_multiupload;
     // an dieser stelle könnten natürlich auch alle setter, getter und funktionen verwendet werden
     // für weitere Informationen bitte den Entwicklerbereich einsehen
+    $upload->setCallback("complete", "multiuploadEditFile");
     echo $upload->createUploadForm(); 
   ?>
   </div>
