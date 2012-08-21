@@ -7,8 +7,8 @@
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x, redaxo4.4
- * @version 2.1.0
+ * @package redaxo4.3.x, redaxo4.4.x
+ * @version 2.2.1
  */
  
 if(!class_exists('rex_mediapool_multiupload')) {

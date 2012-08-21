@@ -7,8 +7,8 @@
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x, redaxo4.4
- * @version 2.1.0
+ * @package redaxo4.3.x, redaxo4.4.x
+ * @version 2.2.1
  */
 
 // ADDON IDENTIFIER
@@ -22,8 +22,8 @@ $myroot = $REX['INCLUDE_PATH'].'/addons/'.$myself.'/';
 $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 2,
-'MINORVERSION' => 1,
-'SUBVERSION'   => 0
+'MINORVERSION' => 2,
+'SUBVERSION'   => 1
 );
 
 // ADDON REX COMMONS
