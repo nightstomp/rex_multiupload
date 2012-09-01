@@ -107,7 +107,6 @@ if(is_object($REX['USER']) AND ($REX['USER']->hasPerm('rex_multiupload[]') OR $R
   $header =
     PHP_EOL.'  '.
     PHP_EOL.'  <!-- '.$myself.' -->'.
-    PHP_EOL.'  <link rel="stylesheet" type="text/css" href="../files/addons/'.$myself.'/backend.css" media="screen, projection, print" />'.
     PHP_EOL.'  <link rel="stylesheet" type="text/css" href="../files/addons/'.$myself.'/fileuploader.css" media="screen, projection, print" />'.
     PHP_EOL.'  <script type="text/javascript">var lastMediaPoolOpener = "'.$_REX_HACK_OPENER.'";</script>'.
     PHP_EOL.'  <script type="text/javascript" src="../files/addons/'.$myself.'/fileuploader.js"></script>'.
