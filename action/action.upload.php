@@ -1,14 +1,14 @@
 <?php
 
 /**
- * REX Multiupload - Multi Upload Utlility
+ * REX Multiupload - Multi Upload Utility
  *
  * @link https://github.com/nightstomp/rex_multiupload
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x, redaxo4.4
- * @version 2.1.0
+ * @package redaxo4.3.x, redaxo4.4.x, redaxo4.5.x
+ * @version 3.0.1
  */
  
 $myself = 'rex_multiupload';
@@ -167,7 +167,10 @@ class qqFileUploader {
         
         if ($this->file->save($uploadDirectory . $final_name)){
 			rex_mediapool_syncFile($final_name, rex_get('mediaCat', 'int'), '');
-	        return array('success'=>true, 'filename' => ''.$final_name.'', 'mediaCatId' => rex_get('mediaCat', 'int'), 'originalname' => ''.$filename.'.'.$ext.'', 'timestamp' => time());
+
+            rex_set_session('media[rex_file_category]', rex_get('mediaCat', 'int'));
+
+	        return array('success'=>true, 'filename' => ''.$final_name.'', 'mediaCatId' => rex_get('mediaCat', 'int'), 'fileId' => OOMedia::getMediaByFileName($final_name)->getId(), 'originalname' => ''.$filename.'.'.$ext.'', 'timestamp' => time());
         } else {
             return array('error'=> 'Die Datei konnte nicht gespeichert werden.' .
                 'Der Upload wurde abgebrochen, oder es handelt sich um einen internen Fehler');

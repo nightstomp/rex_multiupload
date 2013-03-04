@@ -12,5 +12,6 @@
 */ 
   
   $upload = new rex_mediapool_multiupload;
+  $upload->setCallback("complete", "multiuploadEditFile");
   echo $upload->createUploadForm();
 ?>

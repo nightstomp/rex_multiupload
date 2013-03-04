@@ -151,7 +151,7 @@ echo '
     <input type="hidden" name="func" value="savesettings" />
 
         <fieldset class="rex-form-col-1">
-          <legend>Einstellungen für REX Multiupload</legend>
+          <legend>Einstellungen für Rex Multiupload</legend>
           <div class="rex-form-wrapper">
             
             <div class="rex-form-row">
