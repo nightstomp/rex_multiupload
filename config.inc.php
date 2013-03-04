@@ -1,15 +1,17 @@
 <?php
 
 /**
- * REX Multiupload - Multi Upload Utlility
+ * REX Multiupload - Multi Upload Utility
  *
  * @link https://github.com/nightstomp/rex_multiupload
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x, redaxo4.4.x
- * @version 3.0.0 BETA 4
+ * @package redaxo4.3.x, redaxo4.4.x, redaxo4.5.x
+ * @version 3.0.1
  */
+
+
 
 // ADDON IDENTIFIER
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,14 +25,20 @@ $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 3,
 'MINORVERSION' => 0,
-'SUBVERSION'   => '0 BETA 4'
+'SUBVERSION'   => 1
 );
+
+
+define('REX_HAS_CONTENT_OUTPUT_EP', '4.5b5.0');
+define('REX_CURRENT_VERSION', $REX['VERSION'].'.'.$REX['SUBVERSION'].'.'.$REX['MINORVERSION']);
+
+
 
 // ADDON REX COMMONS
 ////////////////////////////////////////////////////////////////////////////////
 $REX['ADDON']['rxid'][$myself] = '938';
 $REX['ADDON']['page'][$myself] = $myself;
-$REX['ADDON']['name'][$myself] = 'REX Multiupload';
+$REX['ADDON']['name'][$myself] = 'Rex Multiupload';
 $REX['ADDON']['version'][$myself] = implode('.', $REX['ADDON'][$myself]['VERSION']);
 $REX['ADDON']['author'][$myself] = 'Hirbod Mirjavadi';
 $REX['ADDON']['supportpage'][$myself] = 'www.redaxo.org/de/forum/addons-f30/update-rex-multiupload-no-flash-html5-no-uploadlimit-t17253.html';
@@ -119,8 +127,18 @@ if(is_object($REX['USER']) AND ($REX['USER']->hasPerm('rex_multiupload[]') OR $R
   
   // Wert steht auf rex_request, da der Medienpool teilweise per $_GET Parameter sendet, teilweise per $_POST
   if ($REX['REDAXO'] && rex_request('page', 'string') == 'mediapool') {
-    $REX['PAGES']['mediapool']->getPage()->setPath($REX['INCLUDE_PATH'].'/addons/rex_multiupload/patches/mediapool_'.$patch_REX.'.inc.php');
+
     rex_register_extension('PAGE_MEDIAPOOL_MENU', 'rex_multiupload_menu_insert'); // in die Medienpool-Navi einklinken
+
+
+    if (version_compare(REX_CURRENT_VERSION, REX_HAS_CONTENT_OUTPUT_EP) < 0) {
+      $REX['PAGES']['mediapool']->getPage()->setPath($REX['INCLUDE_PATH'].'/addons/rex_multiupload/patches/mediapool_'.$patch_REX.'.inc.php');
+    } else {
+      if(rex_request('subpage', 'string') == 'rex_multiupload') {
+        rex_register_extension('PAGE_MEDIAPOOL_OUTPUT', 'rex_multiupload_page_output'); // in die Medienpool-Navi einklinken
+      }
+    }
+
   }
 }
 

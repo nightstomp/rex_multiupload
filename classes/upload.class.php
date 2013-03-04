@@ -1,14 +1,14 @@
 <?php
 
 /**
- * REX Multiupload - Multi Upload Utlility
+ * REX Multiupload - Multi Upload Utility
  *
  * @link https://github.com/nightstomp/rex_multiupload
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x, redaxo4.4
- * @version 3.0.0 BETA 3
+ * @package redaxo4.3.x, redaxo4.4.x, redaxo4.5.x
+ * @version 3.0.1
  */
  
 if(!class_exists('rex_mediapool_multiupload')) {
@@ -150,7 +150,12 @@ if(!class_exists('rex_mediapool_multiupload')) {
       */
       public function getMediaCats(){
         global $REX, $I18N, $PERMALL;
+        
         $rex_file_category = '';
+        if(!$rex_file_category)
+        {
+          $rex_file_category = rex_session('media[rex_file_category]', 'int');
+        }
         
         // include cat sync select
         $cats_sel = new rex_select;
@@ -183,6 +188,11 @@ if(!class_exists('rex_mediapool_multiupload')) {
         global $REX, $I18N, $PERMALL;
 
         $rex_file_category = '';
+        if(!$rex_file_category)
+        {
+          $rex_file_category = rex_session('media[rex_file_category]', 'int');
+        }
+
         $output = '';
         $script_page_header = '';
         $uploadPath = "index.php?page=".$this->myself."&subpage=upload&faceless=1";

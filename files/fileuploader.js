@@ -5,8 +5,8 @@
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x, redaxo4.4
- * @version 3.0.0 BETA 3
+ * @package redaxo4.3.x, redaxo4.4.x, redaxo4.5.x
+ * @version 3.0.1
  */
 
 /**
@@ -751,7 +751,7 @@ qq.FileUploader = function(o){
                 
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>Dateien hier ablegen!</span></div>' +
-                '<div class="qq-upload-button">Datei hochladen / per Drag & Drop ablegen</div>' +
+                '<div class="qq-upload-button">Klicke um Dateien hochzuladen / oder per Drag & Drop ablegen</div>' +
                 '<ul class="qq-upload-list"></ul>' + 
              '</div>',
 

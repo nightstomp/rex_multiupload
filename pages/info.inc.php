@@ -1,5 +1,5 @@
 <div class="rex-addon-output">
-  <h2 class="rex-hl2" style="font-size: 1em;">REX Multiupload</h2>
+  <h2 class="rex-hl2" style="font-size: 1em;">Rex Multiupload</h2>
 
   <div class="rex-addon-content">
       <p>Das Multiupload-Addon integriert sich nahtlos in den Medienpool und liefert die Möglichkeit, 

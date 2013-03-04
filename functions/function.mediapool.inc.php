@@ -7,3 +7,12 @@ if(!function_exists('rex_multiupload_menu_insert')){
     return $tmp;
   }
 }
+
+if(!function_exists('rex_multiupload_page_output')){
+  function rex_multiupload_page_output($params)
+  {
+    $upload = new rex_mediapool_multiupload;
+    $upload->setCallback("complete", "multiuploadEditFile");
+    return $upload->createUploadForm();
+  }
+}
