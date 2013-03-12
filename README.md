@@ -1,4 +1,4 @@
-Redaxo multiple Upload Utility (rex_multiupload)
+Redaxo multiple upload utility (rex_multiupload)
 =========
 
 Redaxo &quot;Multiupload&quot; AddOn
