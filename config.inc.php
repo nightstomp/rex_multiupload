@@ -25,11 +25,11 @@ $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 3,
 'MINORVERSION' => 0,
-'SUBVERSION'   => 1
+'SUBVERSION'   => 3
 );
 
 
-define('REX_HAS_CONTENT_OUTPUT_EP', '4.5b5.0');
+define('REX_HAS_CONTENT_OUTPUT_EP', '4.5b1.0');
 define('REX_CURRENT_VERSION', $REX['VERSION'].'.'.$REX['SUBVERSION'].'.'.$REX['MINORVERSION']);
 
 
