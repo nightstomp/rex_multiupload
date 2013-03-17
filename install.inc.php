@@ -16,6 +16,7 @@ if(!$force_rename) {
 if($force_rename){
 	if(rename(dirname(__FILE__), $REX['INCLUDE_PATH'].'/addons/'.$myself_required)) {
 		header("Location: ". $install_url);
+		exit;
 	} else {
 		$REX['ADDON']['installmsg'][$myself] = 'Das AddOn konnte aufgrund fehlender Rechte das Verzeichnis nicht selbst umbenennen. Bitte führe diesen Schritt manuell durch.';
 		$REX['ADDON']['install'][$myself] = 0;
