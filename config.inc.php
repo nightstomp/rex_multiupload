@@ -105,7 +105,7 @@ if ($REX['REDAXO'])
 // SOME PATCHES
 ////////////////////////////////////////////////////////////////////////////////
 
-if(is_object($REX['USER']) AND ($REX['USER']->hasPerm('rex_multiupload[]') OR $REX['USER']->isAdmin()))
+if(isset($REX['USER']) AND is_object($REX['USER']) AND ($REX['USER']->hasPerm('rex_multiupload[]') OR $REX['USER']->isAdmin()))
 {
   $_REX_HACK_OPENER = "";
   $_REX_HACK_OPENER = rex_request('opener_input_field', 'string');
