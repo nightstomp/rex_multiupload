@@ -180,7 +180,7 @@ class qqFileUploader {
 }
 
 // security proof // die() if not logged in
-if(is_object($REX['USER']) AND ($REX['USER']->hasPerm('rex_multiupload[]') OR $REX['USER']->isAdmin())){
+if(isset($REX['USER']) AND is_object($REX['USER']) AND ($REX['USER']->hasPerm('rex_multiupload[]') OR $REX['USER']->isAdmin())){
   // redaxo array without dots, strip them out
   $blockedExt = str_replace('.', '', $REX['MEDIAPOOL']['BLOCKED_EXTENSIONS']);
   $allowedExtensions = $blockedExt;
