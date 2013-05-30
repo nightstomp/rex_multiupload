@@ -8,7 +8,7 @@
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
  * @package redaxo4.3.x, redaxo4.4.x, redaxo4.5.x
- * @version 3.0.1
+ * @version 3.0.4
  */
 
 
@@ -25,7 +25,7 @@ $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 3,
 'MINORVERSION' => 0,
-'SUBVERSION'   => 3
+'SUBVERSION'   => 4
 );
 
 
