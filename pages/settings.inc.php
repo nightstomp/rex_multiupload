@@ -149,6 +149,7 @@ echo '
     <input type="hidden" name="page" value="'.$myself.'" />
     <input type="hidden" name="subpage" value="'.$subpage.'" />
     <input type="hidden" name="func" value="savesettings" />
+    <input type="hidden" name="folder" value="'.stripslashes($REX["ADDON"]["rex_multiupload"]["settings"]["folder"]).'" />
 
         <fieldset class="rex-form-col-1">
           <legend>Einstellungen für Rex Multiupload</legend>
@@ -211,8 +212,7 @@ echo '
                 '.$select4.'
               </p>
             </div><!-- .rex-form-row -->
-      
-      
+
             <div class="rex-form-row rex-form-element-v2">
               <p class="rex-form-submit">
                 <input class="rex-form-submit" type="submit" id="submit" name="submit" value="Einstellungen speichern" />
