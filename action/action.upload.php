@@ -166,12 +166,12 @@ class qqFileUploader {
         }
 
         $arrFolder = explode('/', $uploadDirectory);
-        if ($arrFolder[sizeof($arrFolder)-1] != 'files') {
+        if ($uploadDirectory != $REX['HTDOCS_PATH'].'files/') {
             $final_name = $filename . '.' . $ext;
         }
 
         if ($this->file->save($uploadDirectory . $final_name)){
-            if ($arrFolder[sizeof($arrFolder)-1] == 'files') {
+            if ($uploadDirectory == $REX['HTDOCS_PATH'].'files/') {
                 rex_mediapool_syncFile($final_name, rex_get('mediaCat', 'int'), '');
 
                 rex_set_session('media[rex_file_category]', rex_get('mediaCat', 'int'));
