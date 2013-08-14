@@ -45,6 +45,7 @@ if(!class_exists('rex_mediapool_multiupload')) {
         $this->upload_simultaneously = $REX["ADDON"][$this->myself]["settings"]["SELECT"]["upload_simultaneously"];
         $this->javascript_debug = $REX["ADDON"][$this->myself]["settings"]["SELECT"]["javascript_debug"];
         $this->showFootnote = $REX["ADDON"][$this->myself]["settings"]["SELECT"]["show_footnote"];
+        $this->folder = $REX["ADDON"][$this->myself]["settings"]["folder"];
         $this->markup = $this->return_markup;
         $this->time = uniqid();        
       }
@@ -54,7 +55,7 @@ if(!class_exists('rex_mediapool_multiupload')) {
       * setValue() function to edit all parameters
       */
       public function setValue($sync = true, $clear_auto = true, $clear_after_finish = true, $simultan_uploads_value = 5, 
-        $js_debug = false, $footnote = true) {
+        $js_debug = false, $footnote = true, $folder = "/files/") {
         
         global $REX;
         
@@ -64,6 +65,7 @@ if(!class_exists('rex_mediapool_multiupload')) {
         $this->upload_simultaneously = $simultan_uploads_value;
         $this->javascript_debug = $js_debug;
         $this->showFootnote = $footnote;
+        $this->folder = $folder;
       }
       
       
@@ -195,7 +197,7 @@ if(!class_exists('rex_mediapool_multiupload')) {
 
         $output = '';
         $script_page_header = '';
-        $uploadPath = "index.php?page=".$this->myself."&subpage=upload&faceless=1";
+        $uploadPath = "index.php?page=".$this->myself."&subpage=upload&upload_folder=".$this->folder."&faceless=1";
         
         if($this->sync_cat){
           // include cat sync select

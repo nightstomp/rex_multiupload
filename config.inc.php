@@ -55,6 +55,7 @@ $patch_REX      = str_replace('.', '_', $this_REX);
 ////////////////////////////////////////////////////////////////////////////////
  
 // --- DYN
+$REX["ADDON"]["rex_multiupload"]["settings"]["folder"] = 'files/';
 $REX["ADDON"]["rex_multiupload"]["settings"]["SELECT"] = array (
   'sync_cats' => '1',
   'instant_upload_start' => '1',
