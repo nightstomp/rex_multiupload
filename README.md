@@ -4,7 +4,7 @@ Redaxo multiple upload utility (rex_multiupload)
 Redaxo &quot;Multiupload&quot; AddOn
 
 How to install:
-Download the package, _rename the folder to **rex_multiupload** (without quotes) and upload it into your REDAXO AddOn dir.
+Download the package, _rename_ the folder to rex_multiupload (without quotes) and upload it into your REDAXO AddOn dir.
 If you leave the folder name unchanged the addon will alter you an notification and will try to fix the problem automagically ;)
 
 --
