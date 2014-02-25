@@ -7,8 +7,8 @@
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x, redaxo4.4.x, redaxo4.5.x
- * @version 3.0.4
+ * @package redaxo4.3.x, redaxo4.4.x, redaxo4.5.x, redaxo4.6.x
+ * @version 3.1.0
  */
 
 
@@ -24,8 +24,8 @@ $myroot = $REX['INCLUDE_PATH'].'/addons/'.$myself.'/';
 $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 3,
-'MINORVERSION' => 0,
-'SUBVERSION'   => 4
+'MINORVERSION' => 1,
+'SUBVERSION'   => 0
 );
 
 

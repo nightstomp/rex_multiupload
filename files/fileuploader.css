@@ -273,7 +273,7 @@ li.open .rex-form-submit {
    padding-left: 10px;
    position: absolute;
    right: 10px;
-   top: 5px;
+   top: 6px;
 }
 
 .editObject .clear_link:hover {
@@ -289,6 +289,19 @@ li.open .rex-form-submit {
    color: #fff;
    font-weight: bold;
    text-decoration: none !important;
+}
+
+
+.editObject .apply_link {
+   cursor: pointer;
+   padding-left: 10px;
+   position: absolute;
+   right: 30px;
+   top: 6px;
+}
+
+.editObject .apply_link:hover {
+   color: green;
 }
 
 li.qq-upload-fail,

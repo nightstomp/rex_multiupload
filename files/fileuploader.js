@@ -5,20 +5,30 @@
  *
  * @author info[at]nightstomp.com Hirbod Mirjavadi
  *
- * @package redaxo4.3.x, redaxo4.4.x, redaxo4.5.x
- * @version 3.0.1
+ * @package redaxo4.3.x, redaxo4.4.x, redaxo4.5.x, redaxo4.6.x
+ * @version 3.1.0
  */
 
 /**
 * Helper functions
 */
 jQuery(document).ready(function(){
+
   if (lastMediaPoolOpener){
     jQuery('#rex-navi-page a').each(function(){
       if(jQuery(this).html() == "Multiupload"){
         jQuery(this).attr('href', jQuery(this).attr('href') + '&opener_input_field='+lastMediaPoolOpener);
       }
-    })
+    });
+
+    if(lastMediaPoolOpener.indexOf('REX_MEDIA_') != -1){
+      lastMediaPoolOpener= "media";
+    }
+
+    if(lastMediaPoolOpener.indexOf('REX_MEDIALIST_') != -1){
+      lastMediaPoolOpener = "medialist";
+    }
+
   } 
 });
 
@@ -66,6 +76,11 @@ function multiuploadEditFile(json) {
   prependLi += '  <span class="qq-upload-spinner" style="display: none"></span>';
   prependLi += '  <span class="editFileName">'+json.filename+'</span>';
   prependLi += '  <span class="qq-upload-success-text"></span>';
+
+  if(lastMediaPoolOpener){
+      prependLi += '  <span class="apply_link" data-method="'+lastMediaPoolOpener+'">Datei übernehmen</span>';
+  }
+  
   prependLi += '  <span class="clear_link">X</span>';
   prependLi += '  <div class="editReturn"></div>';
   prependLi += '</li>';
@@ -234,6 +249,29 @@ jQuery(document).ready(function()
       }
     });
   });
+
+    /**
+   * add to REX_MEDIA or REX_MEDIALIST
+   */
+  jQuery('.edit_uploads .apply_link').live('click', function(event)
+  {
+
+    event.stopPropagation();
+    var el = jQuery(this);
+    var parent = jQuery(this).parents('li');
+
+    if(el.attr('data-method') == "medialist") {
+      selectMedialist(parent.attr('data-filename'));
+    }
+
+    if(el.attr('data-method') == "media") {
+      selectMedia(parent.attr('data-filename'), '');
+    }
+
+    return false;
+
+  });
+
 
 });
 
