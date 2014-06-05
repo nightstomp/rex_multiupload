@@ -24,7 +24,7 @@ $myroot = $REX['INCLUDE_PATH'].'/addons/'.$myself.'/';
 $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 3,
-'MINORVERSION' => 1,
+'MINORVERSION' => 2,
 'SUBVERSION'   => 0
 );
 
