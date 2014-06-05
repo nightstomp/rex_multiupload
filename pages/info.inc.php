@@ -25,5 +25,5 @@
 	  </ul>
 	</div>
 </div>
-<p>Bei Fragen wendet euch bitte im Forum oder direkt bei <a href="http://www.github.com/nightstomp/rexdaxo_multiupload">GitHub</a></p>
-<p>&copy; 2011-2012 Hirbod Mirjavadi (info@nightstomp.com)</p>
+<p>Bei Fragen wendet euch bitte im Forum oder direkt bei <a href="http://www.github.com/nightstomp/rex_multiupload">GitHub</a></p>
+<p>&copy; 2011-2014 Hirbod Mirjavadi (info@nightstomp.com)</p>
