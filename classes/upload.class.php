@@ -160,22 +160,12 @@ if(!class_exists('rex_mediapool_multiupload')) {
         }
         
         // include cat sync select
-        $cats_sel = new rex_select;
+        $cats_sel = new rex_mediacategory_select();
         $cats_sel->setStyle('class="inp100"');
         $cats_sel->setSize(1);
         $cats_sel->setName('rex_file_category');
         $cats_sel->setId('rex_file_category_'.$this->time);
         $cats_sel->addOption($I18N->msg('pool_kats_no'),"0");
-
-        $mediacat_ids = array();
-        $rootCat = 0;
-        $PERMALL = TRUE;
-        if ($rootCats = OOMediaCategory::getRootCategories())
-        {
-          foreach( $rootCats as $rootCat) {
-            rex_mediapool_addMediacatOptionsWPerm( $cats_sel, $rootCat, $mediacat_ids);
-          }
-        }
         $cats_sel->setSelected($rex_file_category);
         return $cats_sel->get();
         
@@ -201,22 +191,12 @@ if(!class_exists('rex_mediapool_multiupload')) {
         
         if($this->sync_cat){
           // include cat sync select
-          $cats_sel = new rex_select;
+          $cats_sel = new rex_mediacategory_select();
           $cats_sel->setStyle('class="inp100"');
           $cats_sel->setSize(1);
           $cats_sel->setName('rex_file_category');
           $cats_sel->setId('rex_file_category_'.$this->time);
           $cats_sel->addOption($I18N->msg('pool_kats_no'),"0");
-
-          $mediacat_ids = array();
-          $rootCat = 0;
-          $PERMALL = TRUE;
-          if ($rootCats = OOMediaCategory::getRootCategories())
-          {
-            foreach( $rootCats as $rootCat) {
-              rex_mediapool_addMediacatOptionsWPerm( $cats_sel, $rootCat, $mediacat_ids);
-            }
-          }
           $cats_sel->setSelected($rex_file_category);
         }
         
